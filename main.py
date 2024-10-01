@@ -250,6 +250,32 @@ Following is your budget & expense report<br>
                 tmp = msg.exec_()
                 
             
+    def open_csv(self):
+        """Opens the USER_FILE in MS Excel"""
+        name, extension = os.path.splitext(USER_FILE)
+        xl_file = name+".csv"
+        data_dict = {}
+        for i in self.model.data:
+            if data_dict.get('date') is None:
+                data_dict['date'] = [i.date]
+            else:
+                data_dict['date'].append(i.date)
+            if data_dict.get('category') is None:
+                data_dict['category'] = [i.category]
+            else:
+                data_dict['category'].append(i.category)
+            if data_dict.get('subcategory') is None:
+                data_dict['subcategory'] = [i.subcategory]
+            else:
+                data_dict['subcategory'].append(i.subcategory)
+            if data_dict.get('cost') is None:
+                data_dict['cost'] = [i.cost]
+            else:
+                data_dict['cost'].append(i.cost)
+        df = pd.DataFrame(data_dict)
+        df.to_csv(xl_file, index=False)
+        os.startfile(xl_file)
+
 
     def add_bg(self):
         """Adds budget."""
